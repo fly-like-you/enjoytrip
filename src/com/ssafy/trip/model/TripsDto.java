@@ -13,8 +13,12 @@ public class TripsDto {
 	public void setTrips(List<TripDto> trips) {
 		this.trips = trips;
 	}
+	
+	public void addTrip(TripDto tripDto) {
+		trips.add(tripDto);
+	}
 
-
+	public TripsDto() {};
 	public TripsDto(List<TripDto> trips) {
 		super();
 		this.trips = trips;

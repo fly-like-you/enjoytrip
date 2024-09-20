@@ -1,27 +1,34 @@
 package com.ssafy.trip.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 public class TripDto {
-	// pk
 	private Integer id;
 	
 	private String name;
 	
-	// 외래키
 	private Integer memberId;
-	private LocalDate startDate;
-	private LocalDate endDate;
-	private LocalDate createdAt;
+	private Date startDate;
+	private Date endDate;
+	private Date createdAt;
 	
 	public TripDto() {}
 
-	public TripDto(String name, Integer memberId, LocalDate startDate, LocalDate endDate, LocalDate createdAt) {
+	public TripDto(Integer id, String name, Integer memberId, Date startDate, Date endDate, Date createdAt) {
+		this.id = id;
 		this.name = name;
 		this.memberId = memberId;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.createdAt = createdAt;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -48,37 +55,37 @@ public class TripDto {
 
 
 
-	public LocalDate getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
 
 
 
-	public void setStartDate(LocalDate startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
 
 
 
-	public LocalDate getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
 
 
 
-	public void setEndDate(LocalDate endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 
 
 
-	public LocalDate getCreatedAt() {
+	public Date getCreatedAt() {
 		return createdAt;
 	}
 
 
 
-	public void setCreatedAt(LocalDate createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 	
