@@ -12,12 +12,12 @@ public class AttractionDto {
 	private String addr;
 	private String type;
 	private String imgUrl;
-	private long lat;
-	private long lng;
+	private double lat;
+	private double lng;
 	
 	public AttractionDto() {}
 	
-	public AttractionDto(String title, String addr, String type, String imgUrl, long lat, long lng) {
+	public AttractionDto(String title, String addr, String type, String imgUrl, double lat, double lng) {
 		super();
 		this.title = title;
 		this.addr = addr;
@@ -51,17 +51,17 @@ public class AttractionDto {
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
 	}
-	public long getLat() {
+	public double getLat() {
 		return lat;
 	}
-	public void setLat(long lat) {
+	public void setLat(double lat) {
 		this.lat = lat;
 	}
 	
-	public long getLng() {
+	public double getLng() {
 		return lng;
 	}
-	public void setLng(long lng) {
+	public void setLng(double lng) {
 		this.lng = lng;
 	}
 	
