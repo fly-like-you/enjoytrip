@@ -44,7 +44,6 @@ public class AttractionDaoImpl implements AttractionDao {
 	        }
 	        
 	    } catch (SQLException e) {
-	        // TODO: 적절한 예외 처리 로깅 또는 예외 전환
 	        e.printStackTrace();
 	    }
 
