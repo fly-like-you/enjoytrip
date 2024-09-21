@@ -96,4 +96,17 @@ public class PostDto {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    @Override
+    public String toString() {
+        return "PostDto[" +
+                "id=" + id +
+                ", author='" + author + '\'' +
+                ", memberId=" + memberId +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ']';
+    }
 }

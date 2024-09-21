@@ -2,13 +2,12 @@ package com.ssafy.post.dao;
 
 import com.ssafy.post.model.PostDto;
 import com.ssafy.post.model.PostsDto;
-import com.ssafy.trip.model.TripDto;
-import com.ssafy.trip.model.TripsDto;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import util.DBUtil;
 
 public class PostDaoImpl implements PostDao {
@@ -21,13 +20,16 @@ public class PostDaoImpl implements PostDao {
     }
 
     @Override
-    public void createPost(PostDto postDto) {
+    public Integer createPost(PostDto postDto) {
         String sql =
                   "INSERT INTO posts(title, content, created_at, updated_at, member_id) \n"
                 + "VALUE (?, ?, ?, ?, ?);";
         try (
                 Connection conn = DBUtil.getInstance().getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql);
+                PreparedStatement pstmt = conn.prepareStatement(
+                        sql,
+                        Statement.RETURN_GENERATED_KEYS
+                );
         ) {
             pstmt.setString(1, postDto.getTitle());
             pstmt.setString(2, postDto.getContent());
@@ -35,11 +37,18 @@ public class PostDaoImpl implements PostDao {
             pstmt.setDate(4, postDto.getUpdatedAt());
             pstmt.setInt(5, postDto.getMemberId());
 
-            pstmt.executeUpdate();
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows > 0) {
+                try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                    if (rs.next()) return rs.getInt(1);
+                }
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return -1;
     }
 
     @Override
