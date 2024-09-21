@@ -25,7 +25,7 @@ public class TripDaoImpl implements TripDao {
 	public void createTrip(TripDto tripDto) {
 		String sql =
 				"INSERT INTO trips(trip_name, start_date, end_date, created_at, member_id)\n"
-						+ "VALUE (?, ?, ?, ?, ?)";
+			  + "VALUE (?, ?, ?, ?, ?)";
 		try (
 				Connection conn = DBUtil.getInstance().getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql);
