@@ -1,5 +1,6 @@
 package test;
 
+import com.mysql.cj.util.TestUtils;
 import com.ssafy.post.dao.PostDao;
 import com.ssafy.post.dao.PostDaoImpl;
 import com.ssafy.post.model.PostDto;
