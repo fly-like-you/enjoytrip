@@ -1,82 +1,88 @@
 package com.ssafy.member.model;
 
+import java.time.LocalDateTime;
+
 public class MemberDto {
-/*
- * 회원 아이디
- * 이름
- * 닉네임
- * 가입일
- * 전화번호
- * 이메일
- * 
- * */
-	private String member_id;
-	private String name;
-	private String nickname;
-	private int password;
-	private int phone_number;
-	private String email;
-	
-	public MemberDto() {}
-	
+    private String memberId;
+    private String name;
+    private String nickname;
+    private String password;
+    private String phoneNumber;
+    private String email;
+    private LocalDateTime joinDate;
 
-	public MemberDto(String member_id, String name, String nickname, int password, int phone_number, String email) {
-		super();
-		this.member_id = member_id;
-		this.name = name;
-		this.nickname = nickname;
-		this.password = password;
-		this.phone_number = phone_number;
-	}
+    public MemberDto() {}
 
+    public MemberDto(String memberId, String name, String nickname, String password, 
+                     String phoneNumber, String email, LocalDateTime joinDate) {
+        this.memberId = memberId;
+        this.name = name;
+        this.nickname = nickname;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.joinDate = joinDate;
+    }
 
-	public String getMember_id() {
-		return member_id;
-	}
+    public String getMemberId() {
+        return memberId;
+    }
 
-	public void setMember_id(String member_id) {
-		this.member_id = member_id;
-	}
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
+    }
 
-	@Override
-	public String toString() {
-		return "MemberDto [member_id=" + member_id + ", name=" + name + ", nickname=" + nickname + ", phone_number="
-				+ phone_number + ", email=" + email + "]";
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getNickname() {
+        return nickname;
+    }
 
-	public String getNickname() {
-		return nickname;
-	}
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public int getPhone_number() {
-		return phone_number;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setPhone_number(int phone_number) {
-		this.phone_number = phone_number;
-	}
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	
-	
+    public LocalDateTime getJoinDate() {
+        return joinDate;
+    }
+
+    public void setJoinDate(LocalDateTime joinDate) {
+        this.joinDate = joinDate;
+    }
+
+    @Override
+    public String toString() {
+        return "MemberDto [memberId=" + memberId + ", name=" + name + ", nickname=" + nickname +
+               ", phoneNumber=" + phoneNumber + ", email=" + email + ", joinDate=" + joinDate + "]";
+    }
 }

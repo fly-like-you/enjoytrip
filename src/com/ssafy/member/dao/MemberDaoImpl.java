@@ -1,68 +1,199 @@
 package com.ssafy.member.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import com.ssafy.member.model.MemberDto;
+import util.DBUtil;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ssafy.member.model.MemberDto;
-
-import util.DBUtil;
-
 public class MemberDaoImpl implements MemberDao {
+    
+    private static MemberDao instance = new MemberDaoImpl();
+    
+    private MemberDaoImpl() {}
+    
+    public static MemberDao getInstance() {
+        return instance;
+    }
 
-private static MemberDao memberDao = new MemberDaoImpl();
-	
-	private MemberDaoImpl() {}
+    @Override
+    public void insertMember(MemberDto memberDto) throws SQLException {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
+            conn = DBUtil.getInstance().getConnection();
+            String sql = "INSERT INTO members (member_id, name, nickname, password, phone_number, email, join_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, memberDto.getMemberId());
+            pstmt.setString(2, memberDto.getName());
+            pstmt.setString(3, memberDto.getNickname());
+            pstmt.setString(4, memberDto.getPassword());
+            pstmt.setString(5, memberDto.getPhoneNumber());
+            pstmt.setString(6, memberDto.getEmail());
+            pstmt.setTimestamp(7, Timestamp.valueOf(memberDto.getJoinDate()));
+            pstmt.executeUpdate();
+        } finally {
+            DBUtil.getInstance().close(pstmt, conn);
+        }
+    }
 
-	public static MemberDao getMemberDao() {
-		return memberDao;
-	}
-	
-	@Override
-	public List<MemberDto> searchMembersAll() {
-		List<MemberDto> list = new ArrayList<MemberDto>();
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		String sql = 
-				  "SELECT m.member_id,name, nickname,password,phone_number,email\r\n"
-				+ "FROM Members m INNER Join Favoriteattractions favA\r\n"
-				+ "ON m.id = favA.member_id\r\n"
-				+ "INNER Join TouristAttractions T\r\n"
-				+ "ON favA.tourist_id = T.id";
-		
-		
-		try {
-			conn = DBUtil.getInstance().getConnection();
-			pstmt = conn.prepareStatement(sql);
-			
-			ResultSet rs = pstmt.executeQuery();
-			
-			while (rs.next()) {
-				String id = rs.getString("m.member_id");
-				String name = rs.getString("name");
-				String nickname = rs.getString("nickname");
-				int pwd = rs.getInt("password");
-				int phoneNum = rs.getInt("phone_number");
-				String eamil = rs.getString("email");
-				
-				
+    @Override
+    public MemberDto getMemberById(String memberId) throws SQLException {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        MemberDto memberDto = null;
+        try {
+            conn = DBUtil.getInstance().getConnection();
+            String sql = "SELECT * FROM members WHERE member_id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, memberId);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                memberDto = new MemberDto();
+                memberDto.setMemberId(rs.getString("member_id"));
+                memberDto.setName(rs.getString("name"));
+                memberDto.setNickname(rs.getString("nickname"));
+                memberDto.setPassword(rs.getString("password"));
+                memberDto.setPhoneNumber(rs.getString("phone_number"));
+                memberDto.setEmail(rs.getString("email"));
+                memberDto.setJoinDate(rs.getTimestamp("join_date").toLocalDateTime());
+            }
+        } finally {
+            DBUtil.getInstance().close(rs, pstmt, conn);
+        }
+        return memberDto;
+    }
 
-				list.add(new MemberDto(id, name , nickname, pwd, phoneNum, eamil));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (conn != null) conn.close();
-				if (pstmt != null) pstmt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-//		END
-		return list;
-	}
+    @Override
+    public List<MemberDto> getAllMembers() throws SQLException {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<MemberDto> memberList = new ArrayList<>();
+        try {
+            conn = DBUtil.getInstance().getConnection();
+            String sql = "SELECT * FROM members";
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                MemberDto memberDto = new MemberDto();
+                memberDto.setMemberId(rs.getString("member_id"));
+                memberDto.setName(rs.getString("name"));
+                memberDto.setNickname(rs.getString("nickname"));
+                memberDto.setPassword(rs.getString("password"));
+                memberDto.setPhoneNumber(rs.getString("phone_number"));
+                memberDto.setEmail(rs.getString("email"));
+                memberDto.setJoinDate(rs.getTimestamp("join_date").toLocalDateTime());
+                memberList.add(memberDto);
+            }
+        } finally {
+            DBUtil.getInstance().close(rs, pstmt, conn);
+        }
+        return memberList;
+    }
+
+    @Override
+    public void updateMember(MemberDto memberDto) throws SQLException {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
+            conn = DBUtil.getInstance().getConnection();
+            String sql = "UPDATE members SET name=?, nickname=?, password=?, phone_number=?, email=? WHERE member_id=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, memberDto.getName());
+            pstmt.setString(2, memberDto.getNickname());
+            pstmt.setString(3, memberDto.getPassword());
+            pstmt.setString(4, memberDto.getPhoneNumber());
+            pstmt.setString(5, memberDto.getEmail());
+            pstmt.setString(6, memberDto.getMemberId());
+            pstmt.executeUpdate();
+        } finally {
+            DBUtil.getInstance().close(pstmt, conn);
+        }
+    }
+
+    @Override
+    public void deleteMember(String memberId) throws SQLException {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
+            conn = DBUtil.getInstance().getConnection();
+            String sql = "DELETE FROM members WHERE member_id=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, memberId);
+            pstmt.executeUpdate();
+        } finally {
+            DBUtil.getInstance().close(pstmt, conn);
+        }
+    }
+
+    @Override
+    public boolean checkDuplicateId(String memberId) throws SQLException {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = DBUtil.getInstance().getConnection();
+            String sql = "SELECT COUNT(*) FROM members WHERE member_id=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, memberId);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } finally {
+            DBUtil.getInstance().close(rs, pstmt, conn);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean checkDuplicateEmail(String email) throws SQLException {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = DBUtil.getInstance().getConnection();
+            String sql = "SELECT COUNT(*) FROM members WHERE email=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, email);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } finally {
+            DBUtil.getInstance().close(rs, pstmt, conn);
+        }
+        return false;
+    }
+
+    @Override
+    public List<MemberDto> searchMembersByName(String name) throws SQLException {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<MemberDto> memberList = new ArrayList<>();
+        try {
+            conn = DBUtil.getInstance().getConnection();
+            String sql = "SELECT * FROM members WHERE name LIKE ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, "%" + name + "%");
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                MemberDto memberDto = new MemberDto();
+                memberDto.setMemberId(rs.getString("member_id"));
+                memberDto.setName(rs.getString("name"));
+                memberDto.setNickname(rs.getString("nickname"));
+                memberDto.setPassword(rs.getString("password"));
+                memberDto.setPhoneNumber(rs.getString("phone_number"));
+                memberDto.setEmail(rs.getString("email"));
+                memberDto.setJoinDate(rs.getTimestamp("join_date").toLocalDateTime());
+                memberList.add(memberDto);
+            }
+        } finally {
+            DBUtil.getInstance().close(rs, pstmt, conn);
+        }
+        return memberList;
+    }
 }
