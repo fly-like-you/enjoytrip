@@ -55,4 +55,14 @@ public class PostSummaryDto {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
+
+    @Override
+    public String toString() {
+        return "PostSummary(요약된 게시글)[" +
+                "id='" + id + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", title='" + title + '\'' +
+                ", createdAt=" + createdAt +
+                ']';
+    }
 }

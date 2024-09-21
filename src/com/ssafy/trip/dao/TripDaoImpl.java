@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import com.ssafy.trip.model.TripDto;
 import com.ssafy.trip.model.TripsDto;
 
+import java.sql.Statement;
 import util.DBUtil;
 
 
@@ -22,13 +23,13 @@ public class TripDaoImpl implements TripDao {
 	}
 
 	@Override
-	public void createTrip(TripDto tripDto) {
+	public Integer createTrip(TripDto tripDto) {
 		String sql =
 				"INSERT INTO trips(trip_name, start_date, end_date, created_at, member_id)\n"
-						+ "VALUE (?, ?, ?, ?, ?)";
+			  + "VALUE (?, ?, ?, ?, ?)";
 		try (
 				Connection conn = DBUtil.getInstance().getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(sql);
+				PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
 		) {
 			pstmt.setString(1, tripDto.getName());
 			pstmt.setDate(2, tripDto.getStartDate());
@@ -36,11 +37,21 @@ public class TripDaoImpl implements TripDao {
 			pstmt.setDate(4, tripDto.getCreatedAt());
 			pstmt.setInt(5, tripDto.getMemberId());
 
-			pstmt.executeUpdate();
+			int affectedRows = pstmt.executeUpdate();
 
+			if (affectedRows > 0) {
+				// 생성된 기본 키를 반환
+				try (ResultSet rs = pstmt.getGeneratedKeys()) {
+					if (rs.next()) {
+						return rs.getInt(1); // 생성된 Attraction의 id 반환
+					}
+				}
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
+		return -1;
 	}
 
 	@Override
@@ -78,7 +89,7 @@ public class TripDaoImpl implements TripDao {
 		String sql =
 				  "SELECT id, trip_name, start_date, end_date, created_at, member_id\r\n"
 				+ "FROM trips\r\n"
-				+ "WHERE member_id = ?";
+				+ "WHERE id = ?";
 
 		TripDto trip = new TripDto();
 
@@ -115,7 +126,7 @@ public class TripDaoImpl implements TripDao {
 	// 멤버의 고유식별번호로 검색하기 (아이디X)
 	public TripsDto findByMemberId(Integer memberId) {
 	    String sql =
-	    		    "SELECT id, trip_name, start_date, end_date, create_at, member_id\r\n"
+	    		    "SELECT id, trip_name, start_date, end_date, created_at, member_id\r\n"
 	    		  + "FROM trips\r\n"
 	    		  + "WHERE member_id = ?";
 

@@ -1,6 +1,8 @@
 package com.ssafy.post.dao;
 
 import com.ssafy.post.model.PostDto;
+import com.ssafy.post.model.PostSummariesDto;
+import com.ssafy.post.model.PostSummaryDto;
 import com.ssafy.post.model.PostsDto;
 import java.sql.Connection;
 import java.sql.Date;
@@ -201,4 +203,99 @@ public class PostDaoImpl implements PostDao {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public PostSummariesDto searchPostSummariesAll() {
+        String sql =
+                "SELECT p.id, p.title, m.nickname, p.created_at " +
+                "FROM posts p " +
+                "INNER JOIN members m ON p.member_id = m.id";
+
+        PostSummariesDto postSummaries = new PostSummariesDto();
+
+        try (Connection conn = DBUtil.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                PostSummaryDto postSummary = new PostSummaryDto();
+                postSummary.setId(rs.getString("id"));
+                postSummary.setTitle(rs.getString("title"));
+                postSummary.setNickname(rs.getString("nickname"));
+                postSummary.setCreatedAt(rs.getDate("created_at"));
+
+                postSummaries.addPostSummary(postSummary);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return postSummaries;
+    }
+
+    @Override
+    public PostSummaryDto findPostSummaryById(Integer postId) {
+        String sql = "SELECT p.id, p.title, m.nickname, p.created_at " +
+                "FROM posts p " +
+                "INNER JOIN members m ON p.member_id = m.id " +
+                "WHERE p.id = ?";
+
+        PostSummaryDto postSummary = null;
+
+        try (Connection conn = DBUtil.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, postId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    postSummary = new PostSummaryDto();
+                    postSummary.setId(rs.getString("id"));
+                    postSummary.setTitle(rs.getString("title"));
+                    postSummary.setNickname(rs.getString("nickname"));
+                    postSummary.setCreatedAt(rs.getDate("created_at"));
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return postSummary;
+    }
+
+    @Override
+    public PostSummariesDto findPostSummariesByMemberId(Integer memberId) {
+        String sql = "SELECT p.id, p.title, m.nickname, p.created_at " +
+                "FROM posts p " +
+                "INNER JOIN members m ON p.member_id = m.id " +
+                "WHERE m.id = ?";
+
+        PostSummariesDto postSummaries = new PostSummariesDto();
+
+        try (Connection conn = DBUtil.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, memberId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    PostSummaryDto postSummary = new PostSummaryDto();
+                    postSummary.setId(rs.getString("id"));
+                    postSummary.setTitle(rs.getString("title"));
+                    postSummary.setNickname(rs.getString("nickname"));
+                    postSummary.setCreatedAt(rs.getDate("created_at"));
+
+                    postSummaries.addPostSummary(postSummary);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return postSummaries;
+    }
+
+
 }

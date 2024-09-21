@@ -11,7 +11,7 @@ public interface TripDao {
 	TripDto findById(Integer tripId);
 	
 	// Create
-	void createTrip(TripDto tripDto);
+	Integer createTrip(TripDto tripDto);
 	
 	// Update
 	void modifyTrip(TripDto tripDto);
