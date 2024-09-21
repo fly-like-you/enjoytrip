@@ -1,6 +1,8 @@
 package com.ssafy.post.dao;
 
 import com.ssafy.post.model.PostDto;
+import com.ssafy.post.model.PostSummariesDto;
+import com.ssafy.post.model.PostSummaryDto;
 import com.ssafy.post.model.PostsDto;
 
 
@@ -11,7 +13,9 @@ public interface PostDao {
 
     // Read
     PostsDto searchPostsAll();
+
     PostsDto findByMemberId(Integer memberId);
+
     PostDto findById(Integer tripId);
 
     // Update
@@ -19,4 +23,10 @@ public interface PostDao {
 
     // Delete
     void deletePost(Integer postId);
+
+
+    /* -----------------Summary----------------*/
+    PostSummariesDto searchPostSummariesAll();
+    PostSummaryDto findPostSummaryById(Integer postId);
+    PostSummariesDto findPostSummariesByMemberId(Integer memberId);
 }

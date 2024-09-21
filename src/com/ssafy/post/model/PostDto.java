@@ -99,7 +99,7 @@ public class PostDto {
 
     @Override
     public String toString() {
-        return "PostDto[" +
+        return "Post(게시글 내용)[" +
                 "id=" + id +
                 ", author='" + author + '\'' +
                 ", memberId=" + memberId +
