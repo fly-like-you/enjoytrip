@@ -17,14 +17,14 @@ public class TripAttractionDaoTest {
         tempTripId = TestUtil.createTempTrip(tempUserId);
         tempAttractionId = TestUtil.createTempAttraction();
         if (tempUserId == -1 || tempTripId == -1 || tempAttractionId == -1) throw new SQLException("실패");
-        System.out.println("------------ F14. 여행 계획 경로 설정 CRUD 테스트를 시작합니다. ------------");
+        System.out.println("------------ F15. 여행 계획 경로 설정 CRUD 테스트를 시작합니다. ------------");
 
         Integer tripAttractionId = 여행계획_생성하기();
         여행계획_여행id로_가져오기();
         여행계획_수정하기(tripAttractionId);
         여행계획_삭제하기(tripAttractionId);
 
-        System.out.println("------------ F14. 여행 계획 경로 설정 CRUD 테스트가 종료되었습니다. ------------");
+        System.out.println("------------ F15. 여행 계획 경로 설정 CRUD 테스트가 종료되었습니다. ------------");
 
         TestUtil.deleteTempAttraction(tempAttractionId);
         TestUtil.deleteTempTrip(tempTripId);
