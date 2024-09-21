@@ -1,8 +1,7 @@
 package com.ssafy.attraction.service;
 
-import java.util.List;
-import com.ssafy.attraction.model.AttractionDto;
+import com.ssafy.attraction.model.AttractionsDto;
 
 public interface AttractionService {
-	List<AttractionDto> searchAttractionsAll();
+	AttractionsDto searchAttractionsAll();
 }

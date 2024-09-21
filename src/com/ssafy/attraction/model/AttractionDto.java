@@ -8,6 +8,7 @@ public class AttractionDto {
 관광지 이미지
 관광지 위도 경도
  * */
+	private Integer id;
 	private String title;
 	private String addr;
 	private String type;
@@ -26,6 +27,15 @@ public class AttractionDto {
 		this.lat = lat;
 		this.lng = lng;
 	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public String getTitle() {
 		return title;
 	}

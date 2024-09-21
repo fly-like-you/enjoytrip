@@ -1,9 +1,7 @@
 package com.ssafy.attraction.service;
 
-import java.util.List;
-
 import com.ssafy.attraction.dao.AttractionDaoImpl;
-import com.ssafy.attraction.model.AttractionDto;
+import com.ssafy.attraction.model.AttractionsDto;
 public class AttractionServiceImpl implements AttractionService{
 
 	final static AttractionServiceImpl instance = new AttractionServiceImpl();
@@ -15,8 +13,8 @@ public class AttractionServiceImpl implements AttractionService{
 	private AttractionServiceImpl() {}
 	
 	@Override
-	public List<AttractionDto> searchAttractionsAll() {
-		return AttractionDaoImpl.getAttractionDao().searchAttractionsAll();
+	public AttractionsDto searchAttractionsAll() {
+		return AttractionDaoImpl.getInstance().searchAttractionsAll();
 	}
 
 }
