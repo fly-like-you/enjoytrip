@@ -1,6 +1,6 @@
 package com.ssafy.trip.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class TripDto {
 	private Integer id;
@@ -16,6 +16,26 @@ public class TripDto {
 
 	public TripDto(Integer id, String name, Integer memberId, Date startDate, Date endDate, Date createdAt) {
 		this.id = id;
+		this.name = name;
+		this.memberId = memberId;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.createdAt = createdAt;
+	}
+
+	@Override
+	public String toString() {
+		return "TripDto{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", memberId=" + memberId +
+				", startDate=" + startDate +
+				", endDate=" + endDate +
+				", createdAt=" + createdAt +
+				'}';
+	}
+
+	public TripDto(String name, Integer memberId, Date startDate, Date endDate, Date createdAt) {
 		this.name = name;
 		this.memberId = memberId;
 		this.startDate = startDate;
