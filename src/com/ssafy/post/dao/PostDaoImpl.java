@@ -2,6 +2,8 @@ package com.ssafy.post.dao;
 
 import com.ssafy.post.model.PostDto;
 import com.ssafy.post.model.PostsDto;
+import com.ssafy.trip.model.TripDto;
+import com.ssafy.trip.model.TripsDto;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -21,7 +23,7 @@ public class PostDaoImpl implements PostDao {
     @Override
     public void createPost(PostDto postDto) {
         String sql =
-                  "INSERT INTO trips(title, content, created_at, updated_at, member_id) \n"
+                  "INSERT INTO posts(title, content, created_at, updated_at, member_id) \n"
                 + "VALUE (?, ?, ?, ?, ?);";
         try (
                 Connection conn = DBUtil.getInstance().getConnection();
@@ -31,7 +33,7 @@ public class PostDaoImpl implements PostDao {
             pstmt.setString(2, postDto.getContent());
             pstmt.setDate(3, postDto.getCreatedAt());
             pstmt.setDate(4, postDto.getUpdatedAt());
-            pstmt.setInt(5, postDto.get());
+            pstmt.setInt(5, postDto.getMemberId());
 
             pstmt.executeUpdate();
 
@@ -73,21 +75,121 @@ public class PostDaoImpl implements PostDao {
 
     @Override
     public PostsDto findByMemberId(Integer memberId) {
+        String sql =
+                "SELECT p.id, title, content, created_at, updated_at, m.nickname\n"
+                        + "FROM posts p INNER JOIN members m\n"
+                        + "ON p.member_id = m.id\n"
+                        + "WHERE m.id = ?";
+
+        PostsDto posts = new PostsDto();
+
+        try (
+                Connection conn = DBUtil.getInstance().getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ) {
+            pstmt.setInt(1,  memberId);
+
+            try (
+                    ResultSet rs = pstmt.executeQuery();
+            ) {
+                while (rs.next()) {
+                    Integer id = rs.getInt("id");
+                    String title = rs.getString("title");
+                    String content = rs.getString("content");
+                    String author = rs.getString("nickname");
+                    Date createAt = rs.getDate("created_at");
+                    Date updatedAt = rs.getDate("updated_at");
+
+                    posts.addPost(new PostDto(id, title, author, content, createAt, updatedAt));
+                }
+                return posts;
+            }
+
+        }  catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
 
     @Override
-    public PostDto findById(Integer tripId) {
+    public PostDto findById(Integer postId) {
+        String sql =
+                  "SELECT p.id, title, content, created_at, updated_at, m.nickname\n"
+                + "FROM posts p INNER JOIN members m\n"
+                + "ON p.member_id = m.id\n"
+                + "WHERE p.id = ?";
+
+        PostDto posts = new PostDto();
+
+        try (
+                Connection conn = DBUtil.getInstance().getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ) {
+            pstmt.setInt(1,  postId);
+
+            try (
+                    ResultSet rs = pstmt.executeQuery();
+            ) {
+                if (rs.next()) {
+                    Integer id = rs.getInt("id");
+                    String title = rs.getString("title");
+                    String content = rs.getString("content");
+                    String author = rs.getString("nickname");
+                    Date createAt = rs.getDate("created_at");
+                    Date updatedAt = rs.getDate("updated_at");
+
+                    posts = new PostDto(id, title, author, content, createAt, updatedAt);
+                }
+                return posts;
+            }
+
+        }  catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
 
     @Override
     public void modifyPost(PostDto postDto) {
+        String sql =
+              "UPDATE posts\n"
+            + "SET title = ?,\n"
+            + "\tcontent = ?\n"
+            + "WHERE id = ?";
 
+        try (
+                Connection conn = DBUtil.getInstance().getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ) {
+            pstmt.setString(1, postDto.getTitle());
+            pstmt.setString(2, postDto.getContent());
+            pstmt.setInt(3, postDto.getId());
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void deletePost(Integer postId) {
+        String sql =
+                "DELETE FROM posts\n"
+                        + "WHERE id = ?;";
 
+        try (
+                Connection conn = DBUtil.getInstance().getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ) {
+            pstmt.setInt(1, postId);
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -15,6 +15,14 @@ public class PostDto {
 
     public PostDto() {}
 
+    public PostDto(Integer memberId, String title, String content, Date createdAt, Date updatedAt) {
+        this.memberId = memberId;
+        this.title = title;
+        this.content = content;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     public PostDto(Integer id, String title, String author, String content, Date createdAt, Date updatedAt) {
         this.id = id;
         this.title = title;

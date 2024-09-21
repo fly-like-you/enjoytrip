@@ -32,7 +32,6 @@ public class TripDaoTest {
     }
 
     private static void 여행계획_모두_가져오기() {
-        System.out.println();
         List<TripDto> tripsDto = tripDao.searchTripsAll().getTrips();
         tripsDto.iterator().forEachRemaining(System.out::println);
     }
