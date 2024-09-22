@@ -56,7 +56,7 @@ public class PostDaoImpl implements PostDao {
     @Override
     public PostsDto searchPostsAll() {
         String sql =
-                "SELECT p.id, title, content, created_at, updated_at, m.nickname\n"
+                "SELECT p.id, p.member_id, title, content, created_at, updated_at, m.nickname\n"
               + "FROM posts p INNER JOIN members m\n"
               + "ON p.member_id = m.id\n";
 
@@ -67,14 +67,16 @@ public class PostDaoImpl implements PostDao {
              ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
-                Integer id = rs.getInt("id");
-                String name = rs.getString("title");
-                String author = rs.getString("nickname");
-                String content = rs.getString("content");
-                Date createdAt = rs.getDate("created_at");
-                Date updatedAt = rs.getDate("updated_at");
+                PostDto post = new PostDto();
+                post.setId(rs.getInt("id"));
+                post.setTitle(rs.getString("title"));
+                post.setMemberId(rs.getInt("member_id"));
+                post.setAuthor(rs.getString("nickname"));
+                post.setContent(rs.getString("content"));
+                post.setCreatedAt(rs.getDate("created_at"));
+                post.setUpdatedAt(rs.getDate("updated_at"));
 
-                posts.addPost(new PostDto(id, name, author, content, createdAt, updatedAt));
+                posts.addPost(post);
             }
 
         } catch (SQLException e) {
