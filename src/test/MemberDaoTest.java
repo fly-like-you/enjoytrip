@@ -14,7 +14,7 @@ public class MemberDaoTest {
     static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        System.out.println("------------ 회원 CRU 테스트를 시작합니다. ------------");
+        System.out.println("------------ 회원 CRUD 테스트를 시작합니다. ------------");
         tempMemberId = 회원_생성하기();
         회원_모두_가져오기();
         회원_탈퇴하기("younghee92");

@@ -15,19 +15,23 @@ public class TripDaoTest {
     static Integer tempTripId;
 
     public static void main(String[] args) throws SQLException {
+        System.out.println("테스트에 필요한 더미 데이터를 생성합니다.");
         tempUserId = TestUtil.createTempUser();
 
         System.out.println("------------ F04. 여행 계획 CRUD 테스트를 시작합니다. ------------");
         tempTripId = 여행계획_생성하기();
-        if (tempUserId == -1 || tempTripId == -1) throw new SQLException("실패");
+        if (tempUserId == -1 || tempTripId == -1) {
+            throw new SQLException("실패");
+        }
 
         여행계획_모두_가져오기();
         여행계획_pk로_가져오기();
         여행계획_유저id로_가져오기();
         여행계획_수정하기();
-         여행계획_제거하기();
+        여행계획_제거하기();
 
         System.out.println("------------ F04. 여행 계획 테스트가 종료되었습니다. ------------");
+        System.out.println("더미 데이터를 제거합니다.");
         TestUtil.deleteTempUser(tempUserId);
 
     }

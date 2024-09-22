@@ -17,6 +17,7 @@ public class PostDaoTest {
     static final PostDao postDao = PostDaoImpl.getPostDao();
 
     public static void main(String[] args) {
+        System.out.println("테스트에 필요한 더미 데이터를 생성합니다.");
         tempUserId = TestUtil.createTempUser();
 
         System.out.println("------------ F10. 게시판 CRUD 테스트를 시작합니다. ------------");
@@ -31,6 +32,7 @@ public class PostDaoTest {
         요약게시판_유저id로_가져오기();
         게시판_삭제하기();
         System.out.println("------------ F10. 게시판 테스트가 종료되었습니다. ------------");
+        System.out.println("더미 데이터를 제거합니다.");
         TestUtil.deleteTempUser(tempUserId);
     }
 

@@ -13,10 +13,12 @@ public class TripAttractionDaoTest {
     static Integer tempTripId;
     static Integer tempAttractionId;
     public static void main(String[] args) throws SQLException {
+        System.out.println("테스트에 필요한 더미 데이터를 생성합니다.");
         tempUserId = TestUtil.createTempUser();
         tempTripId = TestUtil.createTempTrip(tempUserId);
         tempAttractionId = TestUtil.createTempAttraction();
         if (tempUserId == -1 || tempTripId == -1 || tempAttractionId == -1) throw new SQLException("실패");
+
         System.out.println("------------ F15. 여행 계획 경로 설정 CRUD 테스트를 시작합니다. ------------");
 
         Integer tripAttractionId = 여행계획_생성하기();
@@ -26,6 +28,7 @@ public class TripAttractionDaoTest {
 
         System.out.println("------------ F15. 여행 계획 경로 설정 CRUD 테스트가 종료되었습니다. ------------");
 
+        System.out.println("더미 데이터를 제거합니다.");
         TestUtil.deleteTempAttraction(tempAttractionId);
         TestUtil.deleteTempTrip(tempTripId);
         TestUtil.deleteTempUser(tempUserId);
