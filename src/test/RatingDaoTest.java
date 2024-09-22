@@ -14,7 +14,7 @@ public class RatingDaoTest {
         System.out.println("테스트에 필요한 더미 데이터를 생성합니다.");
         tempMemberId = TestUtil.createTempUser();
         tempAttractionId = TestUtil.createTempAttraction();
-        System.out.println("------------ F15. 관광지 DAO CRUD 테스트를 시작합니다. ------------");
+        System.out.println("------------ F15. 평점 CRUD 테스트를 시작합니다. ------------");
 
         /*            CREATE           */
         Integer ratingId = 평점_생성하기();
@@ -31,7 +31,7 @@ public class RatingDaoTest {
         /*            DELETE           */
         평점_삭제하기(ratingId);
 
-        System.out.println("------------ F15. 관광지 DAO CRUD 테스트를 종료합니다. ------------");
+        System.out.println("------------ F15. 평점 CRUD 테스트를 종료합니다. ------------");
         System.out.println("더미 데이터를 제거합니다.");
         TestUtil.deleteTempUser(tempMemberId);
         TestUtil.deleteTempAttraction(tempAttractionId);
@@ -63,9 +63,9 @@ public class RatingDaoTest {
     public static void 평점_memberId로_가져오기(Integer memberId) {
         RatingsDto ratingsDto = ratingDao.searchRatingsByMemberId(memberId);
         if (ratingsDto != null && !ratingsDto.getRatings().isEmpty()) {
-            System.out.println("해당 회원의 평점을 성공적으로 가져왔습니다. 총 " + ratingsDto.getRatings().size() + "개의 평점이 있습니다.");
+            System.out.println("회원의 평점을 성공적으로 가져왔습니다. 총 " + ratingsDto.getRatings().size() + "개의 평점이 있습니다.");
         } else {
-            System.out.println("해당 회원의 평점을 찾을 수 없습니다. Member ID: " + memberId);
+            System.out.println("회원의 평점을 찾을 수 없습니다. Member ID: " + memberId);
         }
     }
 
@@ -73,9 +73,9 @@ public class RatingDaoTest {
     public static void 평점_attractionId로_가져오기(Integer attractionId) {
         RatingsDto ratingsDto = ratingDao.searchRatingsByAttractionId(attractionId);
         if (ratingsDto != null && !ratingsDto.getRatings().isEmpty()) {
-            System.out.println("해당 관광지의 평점을 성공적으로 가져왔습니다. 총 " + ratingsDto.getRatings().size() + "개의 평점이 있습니다.");
+            System.out.println("관광지의 평점을 성공적으로 가져왔습니다. 총 " + ratingsDto.getRatings().size() + "개의 평점이 있습니다.");
         } else {
-            System.out.println("해당 관광지의 평점을 찾을 수 없습니다. Attraction ID: " + attractionId);
+            System.out.println("관광지의 평점을 찾을 수 없습니다. Attraction ID: " + attractionId);
         }
     }
 
@@ -83,9 +83,9 @@ public class RatingDaoTest {
     public static void 평점_memberId와_attractionId로_가져오기(Integer memberId, Integer attractionId) {
         RatingDto ratingDto = ratingDao.searchRatingByMemberIdAndAttractionId(memberId, attractionId);
         if (ratingDto != null) {
-            System.out.println("해당 회원과 관광지의 평점을 성공적으로 가져왔습니다: " + ratingDto.getRate());
+            System.out.println("회원과 관광지의 평점을 성공적으로 가져왔습니다: " + ratingDto.getRate());
         } else {
-            System.out.println("해당 회원과 관광지의 평점을 찾을 수 없습니다.");
+            System.out.println("회원과 관광지의 평점을 찾을 수 없습니다.");
         }
     }
 
